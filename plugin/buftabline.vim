@@ -67,7 +67,10 @@ function! buftabline#render()
 		let tab.hilite = currentbuf == bufnum ? 'Current' : bufwinnr(bufnum) > 0 ? 'Active' : 'Hidden'
 		if currentbuf == bufnum | let [centerbuf, s:centerbuf] = [bufnum, bufnum] | endif
 		let bufpath = bufname(bufnum)
-		if strlen(bufpath)
+		let term_title = getbufvar(bufnum, 'term_title')
+		if strlen(term_title)
+			let tab.label = term_title
+		elseif strlen(bufpath)
 			let tab.path = fnamemodify(bufpath, ':p:~:.')
 			let tab.sep = strridx(tab.path, s:dirsep, strlen(tab.path) - 2) " keep trailing dirsep
 			let tab.label = tab.path[tab.sep + 1:]
